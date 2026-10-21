@@ -64,7 +64,7 @@ Set required variables:
 
 ```txt
 GEMINI_API_KEY=
-GEMINI_MODEL=gemini-2.0-flash
+GEMINI_MODEL=gemini-2.5-flash
 ```
 
 Get a Gemini API key from Google AI Studio.

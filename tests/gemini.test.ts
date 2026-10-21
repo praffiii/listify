@@ -73,4 +73,19 @@ describe("createGeminiListingGenerator", () => {
     );
     expect(request.contents[0].parts[1].inlineData.data).toBe("aGVsbG8=");
   });
+
+  it("disables thinking so the listing JSON fits within the output cap", async () => {
+    const generateContent = vi.fn().mockResolvedValue({
+      text: JSON.stringify(result),
+    });
+    const generate = createGeminiListingGenerator({
+      client: { models: { generateContent } },
+      model: "gemini-test",
+    });
+
+    await generate(input);
+
+    const request = generateContent.mock.calls[0]?.[0];
+    expect(request.config.thinkingConfig).toEqual({ thinkingBudget: 0 });
+  });
 });
