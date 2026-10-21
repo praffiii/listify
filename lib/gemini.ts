@@ -67,6 +67,8 @@ export function createGeminiListingGenerator(options: {
           responseMimeType: "application/json",
           responseJsonSchema: z.toJSONSchema(listingAiResponseSchema),
           maxOutputTokens: 1_600,
+          // 2.5 models count thinking against maxOutputTokens, which truncates the JSON.
+          thinkingConfig: { thinkingBudget: 0 },
           safetySettings: [
             {
               category: HarmCategory.HARM_CATEGORY_HARASSMENT,
@@ -131,6 +133,6 @@ export async function generateListingWithGemini(
 ): Promise<ListingResult> {
   return createGeminiListingGenerator({
     client: getClient(),
-    model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+    model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
   })(input, abortSignal);
 }
